@@ -29,18 +29,26 @@ function Home() {
         const response = await instance.delete(`products/${id}`)
             .then(res => {
                 console.log("DELETED SUCCESS", res.data);
+                setData((prev) => prev.filter((el) => el.id !== res.data.id))
             })
             .catch(error => {
                 console.log(error);
             })
+
     };
     const newProducts = {
         title: 'iphone 9plus',
     }
     const handleUpdate = async () => {
-        const response = await instance.post(`products/${id}`, newProducts)
+        const response = await instance.patch(`products/${id}`, newProducts)
             .then(res => {
                 console.log("UPDATED SUCCESS", res.data);
+                console.log(data);
+                setData(() => data.map((el) => {
+                    if (el.id === Number(res.data.id)) el.title = res.data.title;
+                    return el
+                }))
+                console.log(data);
             })
             .catch(error => {
                 console.log(error);
